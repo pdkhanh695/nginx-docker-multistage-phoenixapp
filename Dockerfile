@@ -2,9 +2,6 @@
 # Build Stage 
 FROM elixir:alpine AS app_builder
 
-# Set up Nginx & copy the file from nginx.conf
-COPY --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf
-
 # Set environment variables for building the application
 ENV MIX_ENV=prod \
     TEST=1 \
@@ -35,7 +32,7 @@ RUN mix deps.compile
 RUN mix release
 
 # Application Stage 
-FROM alpine AS app
+FROM nginx:1.18.0-alpine as nginx_builder
 
 ENV LANG=C.UTF-8
 
@@ -55,6 +52,7 @@ USER app
 
 
 COPY entrypoint.sh .
+COPY nginx.conf /etc/nginx/conf.d/
 
 # ENV APP_PORT=4000
 # ENV APP_HOSTNAME=localhost
@@ -78,3 +76,7 @@ ENV SECRET_KEY_BASE=$SECRET_KEY_BASE
 
 # Run the Phoenix app
 CMD ["sh","./entrypoint.sh"]
+
+# Remove default nginx config which attempts to bind to port 80
+# RUN rm /etc/nginx/sites-enabled/default
+ENTRYPOINT  ["nginx", "-g", "daemon off;"]
