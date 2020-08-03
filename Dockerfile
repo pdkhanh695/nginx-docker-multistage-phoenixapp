@@ -77,5 +77,5 @@ ENV SECRET_KEY_BASE=$SECRET_KEY_BASE
 CMD ["sh","./entrypoint.sh"]
 
 FROM nginx:1.18.0-alpine AS Nginx_config
-COPY nginx.conf /etc/nginx/conf.d
+COPY nginx.conf /etc/nginx/nginx.conf
 CMD ["nginx", "-g", "daemon off;"]
