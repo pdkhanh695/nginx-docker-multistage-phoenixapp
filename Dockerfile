@@ -32,7 +32,7 @@ RUN mix deps.compile
 RUN mix release
 
 # Application Stage 
-FROM nginx:1.18.0-alpine AS Appstage
+FROM alpine AS Appstage
 
 ENV LANG=C.UTF-8
 
@@ -74,6 +74,8 @@ ENV DB_HOST=$DB_HOST
 ENV SECRET_KEY_BASE=$SECRET_KEY_BASE
 
 # Run the Phoenix app
-ENTRYPOINT ["sh","./entrypoint.sh"]
+CMD ["sh","./entrypoint.sh"]
 
+FROM nginx:1.18.0-alpine AS Nginx_config
+COPY nginx.conf /etc/nginx/conf.d
 CMD ["nginx", "-g", "daemon off;"]
