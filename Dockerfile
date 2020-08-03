@@ -40,7 +40,7 @@ ENV LANG=C.UTF-8
 RUN apk add --update openssl ncurses-libs postgresql-client && \
     rm -rf /var/cache/apk/*
 
-EXPOSE 4000
+#EXPOSE 4000
 ENV MIX_ENV=prod
 
 # Copy over the build artifact from the previous step and create a non root user
