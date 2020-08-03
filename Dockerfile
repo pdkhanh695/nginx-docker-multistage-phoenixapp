@@ -1,12 +1,12 @@
-
 # Build Stage 
 FROM elixir:alpine AS app_builder
+
+# Set up Nginx & copy the file from nginx.conf
 
 # Set environment variables for building the application
 ENV MIX_ENV=prod \
     TEST=1 \
     LANG=C.UTF-8
-
 
 RUN apk add --update git && \
     rm -rf /var/cache/apk/*
@@ -32,7 +32,7 @@ RUN mix deps.compile
 RUN mix release
 
 # Application Stage 
-FROM nginx:1.18.0-alpine as nginx_builder
+FROM nginx:1.18.0-alpine AS Appstage
 
 ENV LANG=C.UTF-8
 
@@ -50,9 +50,15 @@ COPY --from=app_builder /app/_build .
 RUN chown -R app: ./prod
 USER app
 
-COPY entrypoint.sh .
-COPY nginx.conf /etc/nginx/conf.d/
 
+COPY entrypoint.sh .
+
+# ENV APP_PORT=4000
+# ENV APP_HOSTNAME=localhost
+# ENV DB_USER=postgres
+# ENV DB_PASSWORD=postgres
+# ENV DB_HOST=postgres.chjup0ji0a5y.us-east-1.rds.amazonaws.com
+# ENV SECRET_KEY_BASE=FgpNsLszr+jdqyiHytZQNZ+FXUCK1yIUJEPUOUtJXEZK91ju/jFaGjwYaQDSQCkM
 ARG APP_PORT
 ARG APP_HOSTNAME
 ARG DB_USER
@@ -68,8 +74,6 @@ ENV DB_HOST=$DB_HOST
 ENV SECRET_KEY_BASE=$SECRET_KEY_BASE
 
 # Run the Phoenix app
-CMD ["sh","./entrypoint.sh"]
+ENTRYPOINT ["sh","./entrypoint.sh"]
 
-# Remove default nginx config which attempts to bind to port 80
-# RUN rm /etc/nginx/sites-enabled/default
-ENTRYPOINT  ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
