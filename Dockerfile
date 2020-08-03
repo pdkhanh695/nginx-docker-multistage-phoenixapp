@@ -40,7 +40,7 @@ ENV LANG=C.UTF-8
 RUN apk add --update openssl ncurses-libs postgresql-client && \
     rm -rf /var/cache/apk/*
 
-#EXPOSE 4000
+EXPOSE 4000
 ENV MIX_ENV=prod
 
 # Copy over the build artifact from the previous step and create a non root user
@@ -59,6 +59,7 @@ COPY entrypoint.sh .
 # ENV DB_PASSWORD=postgres
 # ENV DB_HOST=postgres.chjup0ji0a5y.us-east-1.rds.amazonaws.com
 # ENV SECRET_KEY_BASE=FgpNsLszr+jdqyiHytZQNZ+FXUCK1yIUJEPUOUtJXEZK91ju/jFaGjwYaQDSQCkM
+
 ARG APP_PORT
 ARG APP_HOSTNAME
 ARG DB_USER
@@ -76,7 +77,7 @@ ENV SECRET_KEY_BASE=$SECRET_KEY_BASE
 # Run the Phoenix app
 CMD ["sh","./entrypoint.sh"]
 
-FROM nginx:1.18.0-alpine AS Nginx_config
-COPY nginx.conf /etc/nginx/nginx.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# FROM nginx:1.18.0-alpine AS Nginx_config
+# COPY nginx.conf /etc/nginx/nginx.conf
+# EXPOSE 80
+# ENTRYPOINT ["nginx", "-g", "daemon off;"]

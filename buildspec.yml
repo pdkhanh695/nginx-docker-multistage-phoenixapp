@@ -1,13 +1,13 @@
 version: 0.2
 
 env:
-    parameter-store:
-        VAR_APP_PORT: /khanhwebportal/back-end/APP_PORT
-        VAR_APP_HOSTNAME: /khanhwebportal/back-end/APP_HOSTNAME
-        VAR_DB_USER: /khanhwebportal/back-end/DB_USER
-        VAR_DB_PASSWORD: /khanhwebportal/back-end/DB_PASSWORD
-        VAR_DB_HOST: /khanhwebportal/back-end/DB_HOST
-        VAR_SECRET_KEY_BASE: /khanhwebportal/back-end/SECRET_KEY_BASE 
+  parameter-store:
+    VAR_APP_PORT: /khanhwebportal/back-end/APP_PORT
+    VAR_APP_HOSTNAME: /khanhwebportal/back-end/APP_HOSTNAME
+    VAR_DB_USER: /khanhwebportal/back-end/DB_USER
+    VAR_DB_PASSWORD: /khanhwebportal/back-end/DB_PASSWORD
+    VAR_DB_HOST: /khanhwebportal/back-end/DB_HOST
+    VAR_SECRET_KEY_BASE: /khanhwebportal/back-end/SECRET_KEY_BASE 
 
 phases:
   install:
